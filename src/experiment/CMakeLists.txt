@@ -6,6 +6,8 @@ init_project(experiment "Experiment")
 # Sources
 setup_project_source(experiment "core"
   main.cpp
+  experiment.cpp
+  experiment.h
   assets.cpp
   assets.h
 )

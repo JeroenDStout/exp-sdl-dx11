@@ -1,6 +1,5 @@
+#include "experiment/experiment.h"
 #include "version/git_version.h"
-
-#include "SDL.h"
 
 #include <iostream>
 
@@ -19,5 +18,9 @@ int main(int, char *[])
       << gaos::version::get_git_history() << std::endl
       << std::endl;
 
+    // ---- sdl
+
+    experiment::run_experiment();
+    
     return 0;
 }
