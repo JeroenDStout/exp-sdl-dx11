@@ -11,6 +11,9 @@ setup_project_source(experiment "core"
   assets.cpp
   assets.h
 )
+setup_project_source(experiment "include"
+  include_sdl.h
+)
 
 # Target
 configure_project_executable(experiment)

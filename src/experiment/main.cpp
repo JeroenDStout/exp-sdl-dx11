@@ -1,10 +1,12 @@
 #include "experiment/experiment.h"
+
+#include "experiment/include_sdl.h"
 #include "version/git_version.h"
 
 #include <iostream>
 
 
-int main(int, char *[])
+int SDL_main(int, char *[])
 {
     std::cout
       << std::endl

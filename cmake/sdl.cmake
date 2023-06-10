@@ -1,5 +1,15 @@
 message(STATUS "Setup SDL2")
 
+include(FetchContent)
+
+cmake_policy(SET CMP0135 NEW)
+FetchContent_Declare(
+  SDL2
+  URL     https://github.com/libsdl-org/SDL/releases/download/release-2.26.5/SDL2-devel-2.26.5-VC.zip
+)
+FetchContent_MakeAvailable(SDL2)
+set(ENV{SDL2_DIR} ${sdl2_SOURCE_DIR})
+
 find_package(SDL2 REQUIRED)
 
 set(_added_copy_files "")

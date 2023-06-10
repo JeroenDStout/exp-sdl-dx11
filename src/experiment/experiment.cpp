@@ -1,6 +1,5 @@
 #include "experiment/experiment.h"
-
-#include "SDL.h"
+#include "experiment/include_sdl.h"
 
 #include <random>
 #include <iostream>
