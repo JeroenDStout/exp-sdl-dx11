@@ -18,6 +18,7 @@ include(cmake/python.cmake)
 # Support
 include(cmake/artefacts.cmake)
 include(cmake/sources.cmake)
+include(cmake/sdl.cmake)
 
 # Assets
 include(cmake/assets.cmake)
