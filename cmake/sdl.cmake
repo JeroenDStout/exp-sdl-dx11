@@ -1,8 +1,9 @@
 message(STATUS "Setup SDL2")
 
 include(FetchContent)
-
 cmake_policy(SET CMP0135 NEW)
+
+# Obtain SDL2
 FetchContent_Declare(
   SDL2
   URL     https://github.com/libsdl-org/SDL/releases/download/release-2.26.5/SDL2-devel-2.26.5-VC.zip
@@ -12,8 +13,8 @@ set(ENV{SDL2_DIR} ${sdl2_SOURCE_DIR})
 
 find_package(SDL2 REQUIRED)
 
+# For all configurations, create a custom command to copy the SDL2 dynamic libraries
 set(_added_copy_files "")
-  
 if (WIN32)
   foreach(config ${CMAKE_CONFIGURATION_TYPES})
     add_custom_command(
@@ -32,11 +33,13 @@ else()
   message(ERROR "Missing platform specific copy for SDL2")
 endif()
 
+# Create a target to make the SDL2 files relevant
 add_custom_target(sdl_copy ALL
   DEPENDS ${_added_copy_files}
 )
 set_target_properties(sdl_copy PROPERTIES FOLDER "meta")
 
+# Helper function for setting up project
 function(configure_sdl_target project_ref)
   message(STATUS "Configure SDL Target ${project_ref}")
   
