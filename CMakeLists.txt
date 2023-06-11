@@ -8,6 +8,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(SDL_DX11)
 include(cmake/project.cmake)
+include(cmake/publish.cmake)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -26,3 +27,6 @@ include(cmake/assets.cmake)
 # Subprojects
 add_subdirectory(src/experiment)
 add_subdirectory(src/version)
+
+# Publication
+finalise_publish()

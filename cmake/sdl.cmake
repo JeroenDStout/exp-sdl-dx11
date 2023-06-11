@@ -1,5 +1,7 @@
 message(STATUS "Setup SDL2")
 
+configure_exec_publish("SDL2")
+
 include(FetchContent)
 cmake_policy(SET CMP0135 NEW)
 
