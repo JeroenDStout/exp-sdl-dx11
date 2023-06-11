@@ -24,3 +24,23 @@ jobs:
       
     - name: Build Release
       run: cmake --build ${{github.workspace}}/build --config Release
+
+    - name: Package (Debug)
+      run: python ${{github.workspace}}/util/package_zip.py
+        mode:"Debug"
+        config:"Debug"
+        info:"${{github.workspace}}/build/publish_info.txt"
+        out:"${{github.workspace}}/zip/experiment-debug.zip"
+      
+    - name: Package (Release)
+      run: python ${{github.workspace}}/util/package_zip.py
+        mode:"Debug"
+        config:"Release"
+        info:"${{github.workspace}}/build/publish_info.txt"
+        out:"${{github.workspace}}/zip/experiment-release.zip"
+       
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: zip/*.zip
