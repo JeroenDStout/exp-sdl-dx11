@@ -23,18 +23,29 @@ jobs:
     - name: Configure
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
       
-    - name: Build
+    - name: Build (Release)
       run: cmake --build ${{github.workspace}}/build --config Release
       
-    - name: Package
-      run: python ${{github.workspace}}/util/create_release_zip.py
+    - name: Build (RelWithDebInfo)
+      run: cmake --build ${{github.workspace}}/build --config RelWithDebInfo
+      
+    - name: Package (Release)
+      run: python ${{github.workspace}}/util/package_zip.py
         mode:"Release"
         config:"Release"
         info:"${{github.workspace}}/build/publish_info.txt"
         out:"${{github.workspace}}/zip/experiment-release.zip"
+      
+    - name: Package (RelWithDebInfo)
+      run: python ${{github.workspace}}/util/package_zip.py
+        mode:"Debug"
+        config:"RelWithDebInfo"
+        info:"${{github.workspace}}/build/publish_info.txt"
+        out:"${{github.workspace}}/zip/experiment-relwithdebinfo.zip"
         
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files:
+        files: |
           zip/experiment-release.zip
+          zip/experiment-relwithdebinfo.zip
