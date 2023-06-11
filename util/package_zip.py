@@ -65,6 +65,7 @@ for line in map(str.strip, info_data):
 
 pathlib.Path(os.path.dirname(out)).mkdir(parents=True, exist_ok=True)
 
+print("Writing to " + out)
 with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
   # Add executables
   for root, dirs, files in os.walk(bin_folder):
@@ -73,4 +74,4 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
         continue
       zipf.write(os.path.join(root, file), file)
 
-print(executables)
+print("Done")
