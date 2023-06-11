@@ -70,7 +70,12 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
   # Add executables
   for root, dirs, files in os.walk(bin_folder):
     for file in files:
-      if pathlib.Path(file).suffix not in acceptable_executable_formats:
+      suffixes = ''.join(pathlib.Path(file).suffixes)
+      stem     = file[:-len(suffixes)]
+    
+      if suffixes not in acceptable_executable_formats:
+        continue
+      if stem not in executables:
         continue
       zipf.write(os.path.join(root, file), file)
 
