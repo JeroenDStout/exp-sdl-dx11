@@ -41,6 +41,7 @@ print("Out  : " + out);
 # Read file
 
 executables = []
+misc_files  = []
 
 acceptable_executable_formats = [ ".exe", ".dll" ]
 if mode == "Debug":
@@ -55,11 +56,18 @@ for line in map(str.strip, info_data):
 
   if not ":" in line:
     print("Bad argument: " + line)
+    continue
     
   (command, value) = map(str.strip, line.split(":", 1))
   
   if command == "executable":
     executables.append(value)
+  elif command == "file":
+    if not "->" in value:
+      print("Bad argument: " + value)
+      continue
+    (src, dest) = map(str.strip, value.split("->", 1))
+    misc_files.append([ src, dest ])
     
 # Process
 
@@ -78,5 +86,8 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zipf:
       if stem not in executables:
         continue
       zipf.write(os.path.join(root, file), file)
+      
+  for file in misc_files:
+    zipf.write(file[0], file[1])
 
 print("Done")

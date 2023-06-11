@@ -3,10 +3,11 @@ import subprocess
 import sys
 
 # File out
-output_path = sys.argv[1]
+output_path_cpp = sys.argv[1]
+output_path_txt = sys.argv[2]
 
 # The compile stamp is the date of compilation and the compiler(s) used
-compileElements = [ [ "C++", sys.argv[2] ],
+compileElements = [ [ "C++", sys.argv[3] ],
                     [ "Python", ".".join([ str(i) for i in sys.version_info]) ]
                   ]
 timestamp       = datetime.datetime.now(datetime.timezone.utc).strftime("%d/%m/%Y, %H:%M UTC")
@@ -81,7 +82,7 @@ for (gid, desc, date, info, msg) in allLines:
 # Turn into git timestamps
 gitstamp = [ f"{d[0]} {d[1].rjust(longestBranchVersionPrefix)} {d[2].ljust(longestBranchTagPrefix)} {d[3]}" for d in gitVersionData ]
 
-with open(output_path, 'w') as f:
+with open(output_path_cpp, 'w') as f:
   f.write( "/***************************************************************\n")
   f.write( " *                                                             *\n")
   f.write( " *            This file was automatically generated            *\n")
@@ -109,3 +110,8 @@ with open(output_path, 'w') as f:
   f.write( "    }\n")
   f.write( "\n\n")
   f.write( "}\n")
+
+with open(output_path_txt, 'w') as f:
+  f.write("\n".join(compileStamp) + "\n")
+  f.write("\n")
+  f.write("\n".join(gitstamp) + "\n")

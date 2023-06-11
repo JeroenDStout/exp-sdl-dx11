@@ -7,6 +7,7 @@ init_project(version "meta")
 setup_project_source(version "version"
   git_version.cpp
   git_version.h GENERATED
+  git_version.txt GENERATED
 )
 setup_project_source(version "script"
   ../touch
@@ -21,12 +22,15 @@ configure_cxx_target(version)
 add_custom_command(
   COMMENT			"Generate version file"
   OUTPUT    		${abs_gen}/git_version.h
+                    ${abs_gen}/git_version.txt
   COMMAND   		${Python3_EXECUTABLE}
 					${abs_src}/generate_git_version.py
 					${abs_gen}/git_version.h
+					${abs_gen}/git_version.txt
                     "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}"
   DEPENDS			${abs_src}/../touch
                     ${abs_src}/generate_git_version.py
   WORKING_DIRECTORY ${project_root_dir}
   VERBATIM
 )
+configure_publish_file("${abs_gen}/git_version.txt" "version.txt")
