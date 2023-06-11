@@ -15,17 +15,19 @@ jobs:
     
     - name: git fetch
       run: git fetch --unshallow --update-head-ok origin '+refs/heads/*:refs/heads/*'
-    
-    #- name: Install Qt
-    #  uses: jurplel/install-qt-action@v3
-    #  with:
-    #    version: "6.4.0"
-    #    target: 'desktop'
-    #    install-deps: 'true'
-    #    modules: 'qtcharts qtmultimedia'
           
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
       
-    - name: Build
+    - name: Build Release
       run: cmake --build ${{github.workspace}}/build --config Release
+      
+    - name: Zip Release
+      run: python ${{github.workspace}}/util/create_release_zip.py
+        mode:"Release"
+        config:"Release"
+        info:"${{github.workspace}}/build/publish_info.txt"
+        out:"${{github.workspace}}/zip/experiment-release.zip"
+      
+   # - name: Build RelWithDebInfo
+   #   run: cmake --build ${{github.workspace}}/build --config RelWithDebInfo
