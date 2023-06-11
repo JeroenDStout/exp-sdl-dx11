@@ -37,4 +37,4 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files:
-          ${{github.workspace}}/zip/experiment-release.zip
+          zip/experiment-release.zip
