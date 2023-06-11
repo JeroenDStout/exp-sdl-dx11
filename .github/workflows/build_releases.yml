@@ -1,0 +1,52 @@
+name: Build Release
+
+# On a push event on any branch
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+  
+jobs:
+  build:
+    name: "Windows Latest MSVC"
+    runs-on: "Windows-latest"
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: git fetch
+      run: git fetch --unshallow --update-head-ok origin '+refs/heads/*:refs/heads/*'
+          
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+      
+    - name: Build Release
+      run: cmake --build ${{github.workspace}}/build --config Release
+      
+    - name: Zip Release
+      run: python ${{github.workspace}}/util/create_release_zip.py
+        mode:"Release"
+        config:"Release"
+        info:"${{github.workspace}}/build/publish_info.txt"
+        out:"${{github.workspace}}/zip/experiment-release.zip"
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: "${{github.workspace}}/zip/experiment-release.zip"
+        asset_name: experiment-release.zip
+        asset_content_type: application/zip
